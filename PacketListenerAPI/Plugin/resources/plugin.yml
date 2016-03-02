@@ -1,0 +1,4 @@
+name: PacketListenerApi
+main: org.inventivetalent.packetlistener.PacketListenerAPI
+author: inventivetalent
+version: ${project.version}
