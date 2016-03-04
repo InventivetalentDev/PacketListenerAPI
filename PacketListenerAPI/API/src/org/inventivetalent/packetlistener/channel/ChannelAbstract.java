@@ -91,9 +91,6 @@ public abstract class ChannelAbstract {
 		try {
 			Object dedicatedServer = getServer.invoke(Bukkit.getServer());
 			Object serverConnection = ChannelAbstract.serverConnection.get(dedicatedServer);
-			System.out.println(ServerConnection);
-			System.out.println(serverConnection);
-			System.out.println(connectionList);
 			List currentList = (List<?>) connectionList.get(serverConnection);
 			Field superListField = AccessUtil.setAccessible(currentList.getClass().getSuperclass().getDeclaredField("list"));
 			Object list = superListField.get(currentList);

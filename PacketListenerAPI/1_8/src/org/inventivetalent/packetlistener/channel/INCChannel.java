@@ -54,7 +54,6 @@ public class INCChannel extends ChannelAbstract {
 			addChannelExecutor.execute(new Runnable() {
 				@Override
 				public void run() {
-					System.out.println("addChannel-run");
 					try {
 						channel.pipeline().addBefore(KEY_HANDLER, KEY_PLAYER, new ChannelHandler(player));
 					} catch (Exception e) {
