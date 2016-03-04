@@ -41,9 +41,13 @@ public abstract class PacketHandler {
 
 	private static final List<PacketHandler> handlers = new ArrayList<>();
 
-	private boolean hasOptions;
-	private boolean forcePlayer;
-	private boolean forceServer;
+	private boolean hasSendOptions;
+	private boolean forcePlayerSend;
+	private boolean forceServerSend;
+
+	private boolean hasReceiveOptions;
+	private boolean forcePlayerReceive;
+	private boolean forceServerReceive;
 
 	public static boolean addHandler(PacketHandler handler) {
 		boolean b = handlers.contains(handler);
@@ -51,16 +55,30 @@ public abstract class PacketHandler {
 			try {
 				PacketOptions options = handler.getClass().getMethod("onSend", SentPacket.class).getAnnotation(PacketOptions.class);
 				if (options != null) {
-					handler.hasOptions = true;
+					handler.hasSendOptions = true;
 					if (options.forcePlayer() && options.forceServer()) { throw new IllegalArgumentException("Cannot force player and server packets at the same time!"); }
 					if (options.forcePlayer()) {
-						handler.forcePlayer = true;
+						handler.forcePlayerSend = true;
 					} else if (options.forceServer()) {
-						handler.forceServer = true;
+						handler.forceServerSend = true;
 					}
 				}
 			} catch (Exception e) {
-				throw new RuntimeException("Failed to register handler", e);
+				throw new RuntimeException("Failed to register handler (onSend)", e);
+			}
+			try {
+				PacketOptions options = handler.getClass().getMethod("onReceive", ReceivedPacket.class).getAnnotation(PacketOptions.class);
+				if (options != null) {
+					handler.hasReceiveOptions = true;
+					if (options.forcePlayer() && options.forceServer()) { throw new IllegalArgumentException("Cannot force player and server packets at the same time!"); }
+					if (options.forcePlayer()) {
+						handler.forcePlayerReceive = true;
+					} else if (options.forceServer()) {
+						handler.forceServerReceive = true;
+					}
+				}
+			} catch (Exception e) {
+				throw new RuntimeException("Failed to register handler (onReceive)", e);
 			}
 		}
 		handlers.add(handler);
@@ -74,12 +92,12 @@ public abstract class PacketHandler {
 	public static void notifyHandlers(SentPacket packet) {
 		for (PacketHandler handler : getHandlers()) {
 			try {
-				if (handler.hasOptions) {
-					if (handler.forcePlayer) {
+				if (handler.hasSendOptions) {
+					if (handler.forcePlayerSend) {
 						if (!packet.hasPlayer()) {
 							continue;
 						}
-					} else if (handler.forceServer) {
+					} else if (handler.forceServerSend) {
 						if (packet.hasPlayer()) {
 							continue;
 						}
@@ -96,12 +114,12 @@ public abstract class PacketHandler {
 	public static void notifyHandlers(ReceivedPacket packet) {
 		for (PacketHandler handler : getHandlers()) {
 			try {
-				if (handler.hasOptions) {
-					if (handler.forcePlayer) {
+				if (handler.hasReceiveOptions) {
+					if (handler.forcePlayerReceive) {
 						if (!packet.hasPlayer()) {
 							continue;
 						}
-					} else if (handler.forceServer) {
+					} else if (handler.forceServerReceive) {
 						if (packet.hasPlayer()) {
 							continue;
 						}
@@ -122,18 +140,24 @@ public abstract class PacketHandler {
 
 		PacketHandler that = (PacketHandler) object;
 
-		if (hasOptions != that.hasOptions) { return false; }
-		if (forcePlayer != that.forcePlayer) { return false; }
-		if (forceServer != that.forceServer) { return false; }
+		if (hasSendOptions != that.hasSendOptions) { return false; }
+		if (forcePlayerSend != that.forcePlayerSend) { return false; }
+		if (forceServerSend != that.forceServerSend) { return false; }
+		if (hasReceiveOptions != that.hasReceiveOptions) { return false; }
+		if (forcePlayerReceive != that.forcePlayerReceive) { return false; }
+		if (forceServerReceive != that.forceServerReceive) { return false; }
 		return !(plugin != null ? !plugin.equals(that.plugin) : that.plugin != null);
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = (hasOptions ? 1 : 0);
-		result = 31 * result + (forcePlayer ? 1 : 0);
-		result = 31 * result + (forceServer ? 1 : 0);
+		int result = (hasSendOptions ? 1 : 0);
+		result = 31 * result + (forcePlayerSend ? 1 : 0);
+		result = 31 * result + (forceServerSend ? 1 : 0);
+		result = 31 * result + (hasReceiveOptions ? 1 : 0);
+		result = 31 * result + (forcePlayerReceive ? 1 : 0);
+		result = 31 * result + (forceServerReceive ? 1 : 0);
 		result = 31 * result + (plugin != null ? plugin.hashCode() : 0);
 		return result;
 	}
@@ -141,9 +165,12 @@ public abstract class PacketHandler {
 	@Override
 	public String toString() {
 		return "PacketHandler{" +
-				"hasOptions=" + hasOptions +
-				", forcePlayer=" + forcePlayer +
-				", forceServer=" + forceServer +
+				"hasSendOptions=" + hasSendOptions +
+				", forcePlayerSend=" + forcePlayerSend +
+				", forceServerSend=" + forceServerSend +
+				", hasReceiveOptions=" + hasReceiveOptions +
+				", forcePlayerReceive=" + forcePlayerReceive +
+				", forceServerReceive=" + forceServerReceive +
 				", plugin=" + plugin +
 				'}';
 	}
