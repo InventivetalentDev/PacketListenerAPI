@@ -72,7 +72,20 @@ public abstract class PacketAbstract {
 		try {
 			fieldResolver.resolve(field).set(getPacket(), value);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Modify a value of the packet (without throwing an exception)
+	 *
+	 * @param field Name of the field to modify
+	 * @param value Value to be assigned to the field
+	 */
+	public void setPacketValueSilent(String field, Object value) {
+		try {
+			fieldResolver.resolve(field).set(getPacket(), value);
+		} catch (Exception e) {
 		}
 	}
 
@@ -83,13 +96,25 @@ public abstract class PacketAbstract {
 	 * @return current value of the field
 	 */
 	public Object getPacketValue(String field) {
-		Object value = null;
 		try {
-			value = fieldResolver.resolve(field).get(getPacket());
+			return fieldResolver.resolve(field).get(getPacket());
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return value;
+	}
+
+	/**
+	 * Get a value of the packet (without throwing an exception)
+	 *
+	 * @param field Name of the field
+	 * @return current value of the field
+	 */
+	public Object getPacketValueSilent(String field) {
+		try {
+			return fieldResolver.resolve(field).get(getPacket());
+		} catch (Exception e) {
+		}
+		return null;
 	}
 
 	/**
