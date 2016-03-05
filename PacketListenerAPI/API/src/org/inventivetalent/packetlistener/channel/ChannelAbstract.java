@@ -107,18 +107,21 @@ public abstract class ChannelAbstract {
 
 	public abstract IListenerList newListenerList();
 
-	protected final Object onPacketSend(Player player, Object packet, Cancellable cancellable) {
-		return iPacketListener.onPacketSend(player, packet, cancellable);
+	protected final Object onPacketSend(Object receiver, Object packet, Cancellable cancellable) {
+		return iPacketListener.onPacketSend(receiver, packet, cancellable);
 	}
 
-	protected final Object onPacketReceive(Player player, Object packet, Cancellable cancellable) {
-		return iPacketListener.onPacketReceive(player, packet, cancellable);
+	protected final Object onPacketReceive(Object sender, Object packet, Cancellable cancellable) {
+		return iPacketListener.onPacketReceive(sender, packet, cancellable);
 	}
 
 	interface IListenerList<E> extends List<E> {
 	}
 
 	interface IChannelHandler {
+	}
+
+	interface IChannelWrapper {
 	}
 
 }

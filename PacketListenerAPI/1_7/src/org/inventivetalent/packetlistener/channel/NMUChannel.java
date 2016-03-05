@@ -36,10 +36,10 @@ import org.inventivetalent.packetlistener.IPacketListener;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
 import java.lang.reflect.Field;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 
 public class NMUChannel extends ChannelAbstract {
-
 
 	private static final Field channelField = networkManagerFieldResolver.resolveByFirstTypeSilent(net.minecraft.util.io.netty.channel.Channel.class);
 
@@ -74,7 +74,7 @@ public class NMUChannel extends ChannelAbstract {
 				@Override
 				public void run() {
 					try {
-						if(channel.pipeline().get(KEY_PLAYER)!=null) {
+						if (channel.pipeline().get(KEY_PLAYER) != null) {
 							channel.pipeline().remove(KEY_PLAYER);
 						}
 					} catch (Exception e) {
@@ -114,7 +114,7 @@ public class NMUChannel extends ChannelAbstract {
 								channel = (net.minecraft.util.io.netty.channel.Channel) channelField.get(a);
 							}
 							if (channel.pipeline().get(KEY_SERVER) == null) {
-								channel.pipeline().addBefore(KEY_HANDLER, KEY_SERVER, new ChannelHandler(null));
+								channel.pipeline().addBefore(KEY_HANDLER, KEY_SERVER, new ChannelHandler(new NMUChannelWrapper(channel)));
 							}
 						} catch (Exception e) {
 						}
@@ -150,10 +150,14 @@ public class NMUChannel extends ChannelAbstract {
 
 	class ChannelHandler extends net.minecraft.util.io.netty.channel.ChannelDuplexHandler implements IChannelHandler {
 
-		private Player player;
+		private Object owner;
 
 		public ChannelHandler(Player player) {
-			this.player = player;
+			this.owner = player;
+		}
+
+		public ChannelHandler(ChannelWrapper channelWrapper) {
+			this.owner = channelWrapper;
 		}
 
 		@Override
@@ -161,7 +165,7 @@ public class NMUChannel extends ChannelAbstract {
 			Cancellable cancellable = new Cancellable();
 			Object pckt = msg;
 			if (Packet.isAssignableFrom(msg.getClass())) {
-				pckt = onPacketSend(this.player, msg, cancellable);
+				pckt = onPacketSend(this.owner, msg, cancellable);
 			}
 			if (cancellable.isCancelled()) { return; }
 			super.write(ctx, pckt, promise);
@@ -172,7 +176,7 @@ public class NMUChannel extends ChannelAbstract {
 			Cancellable cancellable = new Cancellable();
 			Object pckt = msg;
 			if (Packet.isAssignableFrom(msg.getClass())) {
-				pckt = onPacketReceive(this.player, msg, cancellable);
+				pckt = onPacketReceive(this.owner, msg, cancellable);
 			}
 			if (cancellable.isCancelled()) { return; }
 			super.channelRead(ctx, pckt);
@@ -180,7 +184,24 @@ public class NMUChannel extends ChannelAbstract {
 
 		@Override
 		public String toString() {
-			return "NMUChannel$ChannelHandler@" + hashCode() + " (" + this.player + ")";
+			return "NMUChannel$ChannelHandler@" + hashCode() + " (" + this.owner + ")";
+		}
+	}
+
+	class NMUChannelWrapper extends ChannelWrapper<net.minecraft.util.io.netty.channel.Channel> implements IChannelWrapper {
+
+		public NMUChannelWrapper(net.minecraft.util.io.netty.channel.Channel channel) {
+			super(channel);
+		}
+
+		@Override
+		public SocketAddress getRemoteAddress() {
+			return this.channel().remoteAddress();
+		}
+
+		@Override
+		public SocketAddress getLocalAddress() {
+			return this.channel().localAddress();
 		}
 	}
 }

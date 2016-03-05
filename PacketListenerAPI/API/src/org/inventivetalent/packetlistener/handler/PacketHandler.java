@@ -98,7 +98,7 @@ public abstract class PacketHandler {
 							continue;
 						}
 					} else if (handler.forceServerSend) {
-						if (packet.hasPlayer()) {
+						if (!packet.hasChannel()) {
 							continue;
 						}
 					}
@@ -120,7 +120,7 @@ public abstract class PacketHandler {
 							continue;
 						}
 					} else if (handler.forceServerReceive) {
-						if (packet.hasPlayer()) {
+						if (!packet.hasChannel()) {
 							continue;
 						}
 					}

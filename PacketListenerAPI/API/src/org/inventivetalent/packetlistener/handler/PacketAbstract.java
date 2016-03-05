@@ -31,11 +31,14 @@ package org.inventivetalent.packetlistener.handler;
 import de.inventivegames.packetlistener.handler.SentPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.inventivetalent.packetlistener.channel.ChannelWrapper;
 import org.inventivetalent.reflection.resolver.FieldResolver;
 
 public abstract class PacketAbstract {
 
-	private Player      player;
+	private Player         player;
+	private ChannelWrapper channelWrapper;
+
 	private Object      packet;
 	private Cancellable cancellable;
 
@@ -43,6 +46,16 @@ public abstract class PacketAbstract {
 
 	public PacketAbstract(Object packet, Cancellable cancellable, Player player) {
 		this.player = player;
+
+		this.packet = packet;
+		this.cancellable = cancellable;
+
+		fieldResolver = new FieldResolver(packet.getClass());
+	}
+
+	public PacketAbstract(Object packet, Cancellable cancellable, ChannelWrapper channelWrapper) {
+		this.channelWrapper = channelWrapper;
+
 		this.packet = packet;
 		this.cancellable = cancellable;
 
@@ -96,6 +109,7 @@ public abstract class PacketAbstract {
 	/**
 	 * @return The receiving or sending player of the packet
 	 * @see #hasPlayer()
+	 * @see #getChannel()
 	 */
 	public Player getPlayer() {
 		return this.player;
@@ -106,6 +120,22 @@ public abstract class PacketAbstract {
 	 */
 	public boolean hasPlayer() {
 		return this.player != null;
+	}
+
+	/**
+	 * @return The receiving or sending channel (wrapped in a {@link ChannelWrapper})
+	 * @see #hasChannel()
+	 * @see #getPlayer()
+	 */
+	public ChannelWrapper<?> getChannel() {
+		return this.channelWrapper;
+	}
+
+	/**
+	 * @return <code>true</code> if the packet has a channel
+	 */
+	public boolean hasChannel() {
+		return this.channelWrapper != null;
 	}
 
 	/**
@@ -143,7 +173,7 @@ public abstract class PacketAbstract {
 
 	@Override
 	public String toString() {
-		return "Packet{ " + (this.getClass().equals(SentPacket.class) ? "[> OUT >]" : "[< IN <]") + " " + this.getPacketName() + " " + (this.hasPlayer() ? this.getPlayername() : "#server#") + " }";
+		return "Packet{ " + (this.getClass().equals(SentPacket.class) ? "[> OUT >]" : "[< IN <]") + " " + this.getPacketName() + " " + (this.hasPlayer() ? this.getPlayername() : this.hasChannel() ? this.getChannel().channel() : "#server#") + " }";
 	}
 
 }

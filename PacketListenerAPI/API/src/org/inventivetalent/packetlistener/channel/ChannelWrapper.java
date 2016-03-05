@@ -26,11 +26,31 @@
  *  either expressed or implied, of anybody else.
  */
 
-package org.inventivetalent.packetlistener;
+package org.inventivetalent.packetlistener.channel;
 
-public interface IPacketListener {
+import java.net.SocketAddress;
 
-	Object onPacketSend(Object receiver, Object packet, org.bukkit.event.Cancellable cancellable);
+/**
+ * Wraps io.nettty.Channel or net.minecraft.util.io.netty.Channel
+ */
+public class ChannelWrapper<T> {
 
-	Object onPacketReceive(Object sender, Object packet, org.bukkit.event.Cancellable cancellable);
+	private T channel;
+
+	public ChannelWrapper(T channel) {
+		this.channel = channel;
+	}
+
+	public T channel() {
+		return this.channel;
+	}
+
+	public SocketAddress getRemoteAddress() {
+		return null;
+	}
+
+	public SocketAddress getLocalAddress() {
+		return null;
+	}
+
 }

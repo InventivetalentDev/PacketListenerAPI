@@ -36,6 +36,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.packetlistener.channel.ChannelWrapper;
 import org.inventivetalent.packetlistener.handler.PacketHandler;
 import org.inventivetalent.packetlistener.handler.ReceivedPacket;
 import org.inventivetalent.packetlistener.handler.SentPacket;
@@ -122,16 +123,26 @@ public class PacketListenerAPI extends JavaPlugin implements IPacketListener, Li
 	}
 
 	@Override
-	public Object onPacketReceive(Player player, Object packet, Cancellable cancellable) {
-		ReceivedPacket receivedPacket = new ReceivedPacket(packet, cancellable, player);
+	public Object onPacketReceive(Object sender, Object packet, Cancellable cancellable) {
+		ReceivedPacket receivedPacket;
+		if (sender instanceof Player) {
+			receivedPacket = new ReceivedPacket(packet, cancellable, (Player) sender);
+		} else {
+			receivedPacket = new ReceivedPacket(packet, cancellable, (ChannelWrapper) sender);
+		}
 		PacketHandler.notifyHandlers(receivedPacket);
 		if (receivedPacket.getPacket() != null) { return receivedPacket.getPacket(); }
 		return packet;
 	}
 
 	@Override
-	public Object onPacketSend(Player player, Object packet, Cancellable cancellable) {
-		SentPacket sentPacket = new SentPacket(packet, cancellable, player);
+	public Object onPacketSend(Object receiver, Object packet, Cancellable cancellable) {
+		SentPacket sentPacket;
+		if (receiver instanceof Player) {
+			sentPacket = new SentPacket(packet, cancellable, (Player) receiver);
+		} else {
+			sentPacket = new SentPacket(packet, cancellable, (ChannelWrapper) receiver);
+		}
 		PacketHandler.notifyHandlers(sentPacket);
 		if (sentPacket.getPacket() != null) { return sentPacket.getPacket(); }
 		return packet;
