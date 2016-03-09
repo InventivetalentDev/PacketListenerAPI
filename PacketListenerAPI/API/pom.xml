@@ -73,8 +73,8 @@
         </dependency>
         <dependency>
             <groupId>org.inventivetalent</groupId>
-            <artifactId>apihelper</artifactId>
-            <version>[1.0.0,)</version>
+            <artifactId>apimanager</artifactId>
+            <version>[1.0.1,)</version>
         </dependency>
     </dependencies>
 

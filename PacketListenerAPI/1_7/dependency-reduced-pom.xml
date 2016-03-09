@@ -28,10 +28,6 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>guava</artifactId>
-          <groupId>com.google.guava</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>commons-lang3</artifactId>
           <groupId>org.apache.commons</groupId>
         </exclusion>
@@ -46,10 +42,6 @@
         <exclusion>
           <artifactId>log4j-api</artifactId>
           <groupId>org.apache.logging.log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>gson</artifactId>
-          <groupId>com.google.code.gson</groupId>
         </exclusion>
         <exclusion>
           <artifactId>jsr305</artifactId>
