@@ -35,64 +35,60 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
+import org.inventivetalent.apihelper.API;
+import org.inventivetalent.apihelper.APIManager;
 import org.inventivetalent.packetlistener.channel.ChannelWrapper;
 import org.inventivetalent.packetlistener.handler.PacketHandler;
 import org.inventivetalent.packetlistener.handler.ReceivedPacket;
 import org.inventivetalent.packetlistener.handler.SentPacket;
-import org.mcstats.MetricsLite;
 
-public class PacketListenerAPI extends JavaPlugin implements IPacketListener, Listener {
+import java.util.logging.Logger;
+
+public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener, Listener, API {
 
 	private ChannelInjector channelInjector;
-	private boolean injected = false;
+	protected boolean injected = false;
 
+	Logger logger = Logger.getLogger("PacketListenerAPI");
+
+	//This gets called either by #registerAPI above, or by the API manager if another plugin requires this API
 	@Override
-	public void onLoad() {
+	public void load() {
 		channelInjector = new ChannelInjector();
 		if (injected = channelInjector.inject(this)) {
 			channelInjector.addServerChannel();
-			getLogger().info("Injected custom channel handlers.");
+			logger.info("Injected custom channel handlers.");
 		} else {
-			getLogger().severe("Failed to inject channel handlers");
+			logger.severe("Failed to inject channel handlers");
 		}
+
 	}
 
+	//This gets called either by #initAPI above or #initAPI in one of the requiring plugins
 	@Override
-	public void onEnable() {
-		if (!injected) {
-			getLogger().warning("Injection failed. Disabling...");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
+	public void init(Plugin plugin) {
+		//Register our events
+		APIManager.registerEvents(this, this);
 
-		Bukkit.getPluginManager().registerEvents(this, this);
-
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			if (metrics.start()) {
-				getLogger().info("Metrics started");
-			}
-		} catch (Exception e) {
-		}
-
-		getLogger().info("Adding channels for online players...");
+		logger.info("Adding channels for online players...");
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			channelInjector.addChannel(player);
 		}
 	}
 
+	//This gets called either by #disableAPI above or #disableAPI in one of the requiring plugins
 	@Override
-	public void onDisable() {
+	public void disable(Plugin plugin) {
 		if (!injected) {
 			return;//Not enabled
 		}
-		getLogger().info("Removing channels for online players...");
+		logger.info("Removing channels for online players...");
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			channelInjector.removeChannel(player);
 		}
 
-		getLogger().info("Removing packet handlers (" + PacketHandler.getHandlers().size() + ")...");
+		logger.info("Removing packet handlers (" + PacketHandler.getHandlers().size() + ")...");
 		while (!PacketHandler.getHandlers().isEmpty()) {
 			PacketHandler.removeHandler(PacketHandler.getHandlers().get(0));
 		}
