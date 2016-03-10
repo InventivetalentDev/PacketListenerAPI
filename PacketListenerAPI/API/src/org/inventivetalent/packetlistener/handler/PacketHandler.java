@@ -28,9 +28,12 @@
 
 package org.inventivetalent.packetlistener.handler;
 
-import de.inventivegames.packetlistener.reflection.NMSUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.inventivetalent.reflection.minecraft.Minecraft;
+import org.inventivetalent.reflection.resolver.FieldResolver;
+import org.inventivetalent.reflection.resolver.MethodResolver;
+import org.inventivetalent.reflection.resolver.minecraft.NMSClassResolver;
 import org.inventivetalent.reflection.util.AccessUtil;
 
 import java.lang.reflect.Field;
@@ -189,13 +192,17 @@ public abstract class PacketHandler {
 		return handlers;
 	}
 
+	static NMSClassResolver nmsClassResolver               = new NMSClassResolver();
+	static FieldResolver    EntityPlayerFieldResolver      = new FieldResolver(nmsClassResolver.resolveSilent("EntityPlayer"));
+	static MethodResolver   PlayerConnectionMethodResolver = new MethodResolver(nmsClassResolver.resolveSilent("PlayerConnection"));
+
 	// Sending methods
 	public void sendPacket(Player p, Object packet) {
 		if (p == null || packet == null) { throw new NullPointerException(); }
 		try {
-			Object handle = NMSUtils.getHandle(p);
-			Object connection = NMSUtils.getField(handle.getClass(), "playerConnection").get(handle);
-			NMSUtils.getMethod(connection.getClass(), "sendPacket", NMSUtils.getNMSClass("Packet")).invoke(connection, new Object[] { packet });
+			Object handle = Minecraft.getHandle(p);
+			Object connection = EntityPlayerFieldResolver.resolve("playerConnection").get(handle);
+			PlayerConnectionMethodResolver.resolve("sendPacket").invoke(connection, new Object[] { packet });
 		} catch (Exception e) {
 			System.err.println("[PacketListenerAPI] Exception while sending " + packet + " to " + p);
 			e.printStackTrace();
