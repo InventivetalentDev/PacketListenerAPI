@@ -28,7 +28,6 @@
 
 package org.inventivetalent.packetlistener.handler;
 
-import de.inventivegames.packetlistener.handler.SentPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.inventivetalent.packetlistener.channel.ChannelWrapper;
