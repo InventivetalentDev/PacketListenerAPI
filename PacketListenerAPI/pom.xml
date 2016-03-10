@@ -18,7 +18,7 @@
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.3.1</pl.version>
+        <pl.version>3.3.2</pl.version>
     </properties>
 
     <build>

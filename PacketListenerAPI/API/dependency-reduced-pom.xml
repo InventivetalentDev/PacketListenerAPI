@@ -59,12 +59,6 @@
       <version>4.0.25.Final</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.inventivetalent</groupId>
-      <artifactId>apimanager</artifactId>
-      <version>1.0.1</version>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 </project>
 
