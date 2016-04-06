@@ -18,7 +18,7 @@
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.3.3</pl.version>
+        <pl.version>3.3.4</pl.version>
     </properties>
 
     <build>
@@ -69,6 +69,12 @@
                                     <include>org.inventivetalent:apimanager**</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.mcstats</pattern>
+                                    <shadedPattern>org.inventivetalent.packetlistener.mcstats</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
