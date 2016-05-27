@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.inventivetalent</groupId>
             <artifactId>reflectionhelper</artifactId>
-            <version>[1.5.0,)</version>
+            <version>[1.7.0,)</version>
         </dependency>
         <dependency>
             <groupId>org.inventivetalent</groupId>
