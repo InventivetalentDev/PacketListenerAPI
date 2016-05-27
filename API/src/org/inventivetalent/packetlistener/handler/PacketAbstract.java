@@ -89,6 +89,33 @@ public abstract class PacketAbstract {
 	}
 
 	/**
+	 * Modify a value of the packet
+	 *
+	 * @param index field-index in the packet class
+	 * @param value value to be assigned to the field
+	 */
+	public void setPacketValue(int index, Object value) {
+		try {
+			fieldResolver.resolveIndex(index).set(getPacket(), value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Modify a value of the packet (without throwing an exception)
+	 *
+	 * @param index field-index in the packet class
+	 * @param value value to be assigned to the field
+	 */
+	public void setPacketValueSilent(int index, Object value) {
+		try {
+			fieldResolver.resolveIndex(index).set(getPacket(), value);
+		} catch (Exception e) {
+		}
+	}
+
+	/**
 	 * Get a value of the packet
 	 *
 	 * @param field Name of the field
@@ -114,6 +141,34 @@ public abstract class PacketAbstract {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+	/**
+	 * Get a value of the packet
+	 *
+	 * @param index field-index in the packet class
+	 * @return value of the field
+	 */
+	public Object getPacketValue(int index) {
+		try {
+			return fieldResolver.resolveIndex(index).get(getPacket());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Get a value of the packet (without throwing an exception)
+	 *
+	 * @param index field-index in the packet class
+	 * @return value of the field
+	 */
+	public Object getPacketValueSilent(int index) {
+		try {
+			return fieldResolver.resolveIndex(index).get(getPacket());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
