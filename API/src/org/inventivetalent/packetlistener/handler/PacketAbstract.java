@@ -171,6 +171,10 @@ public abstract class PacketAbstract {
 		}
 	}
 
+	public FieldResolver getFieldResolver() {
+		return fieldResolver;
+	}
+
 	/**
 	 * @param b if set to <code>true</code> the packet will be cancelled
 	 */
