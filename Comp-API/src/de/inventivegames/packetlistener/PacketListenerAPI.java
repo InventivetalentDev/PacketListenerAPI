@@ -32,24 +32,19 @@ import de.inventivegames.packetlistener.handler.PacketHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Deprecated public class PacketListenerAPI extends JavaPlugin implements Listener {
+@Deprecated
+public class PacketListenerAPI extends JavaPlugin implements Listener {
 
 	@Deprecated
 	public static PacketListenerAPI getInstance() {
 		return null;
 	}
 
-	/**
-	 * @see PacketHandler#addHandler(PacketHandler)
-	 */
 	@Deprecated
 	public static boolean addPacketHandler(PacketHandler handler) {
 		return PacketHandler.addHandler(handler);
 	}
 
-	/**
-	 * @see PacketHandler#removeHandler(PacketHandler)
-	 */
 	@Deprecated
 	public static boolean removePacketHandler(PacketHandler handler) {
 		return PacketHandler.removeHandler(handler);

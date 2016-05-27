@@ -95,6 +95,8 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	}
 
 	/**
+	 * @param handler PacketHandler to add
+	 * @return <code>true</code> if the handler was added
 	 * @see PacketHandler#addHandler(PacketHandler)
 	 */
 	public static boolean addPacketHandler(PacketHandler handler) {
@@ -102,6 +104,8 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	}
 
 	/**
+	 * @param handler PacketHandler to remove
+	 * @return <code>true</code> if the handler was removed
 	 * @see PacketHandler#removeHandler(PacketHandler)
 	 */
 	public static boolean removePacketHandler(PacketHandler handler) {
