@@ -12,13 +12,13 @@
         <module>API</module>
         <module>1_7</module>
         <module>1_8</module>
-        <module>Comp-API</module>
+        <!--<module>Comp-API</module>-->
         <module>Plugin</module>
     </modules>
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.4.2</pl.version>
+        <pl.version>3.4.3</pl.version>
     </properties>
 
     <build>
@@ -73,6 +73,10 @@
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
                                     <shadedPattern>org.inventivetalent.packetlistener.mcstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.inventivetalent.reflection</pattern>
+                                    <shadedPattern>org.inventivetalent.packetlistener.reflection</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
