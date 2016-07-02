@@ -90,7 +90,9 @@ public abstract class ChannelAbstract {
 	public void addServerChannel() {
 		try {
 			Object dedicatedServer = getServer.invoke(Bukkit.getServer());
+			if (dedicatedServer == null) { return; }
 			Object serverConnection = ChannelAbstract.serverConnection.get(dedicatedServer);
+			if (serverConnection == null) { return; }
 			List currentList = (List<?>) connectionList.get(serverConnection);
 			Field superListField = AccessUtil.setAccessible(currentList.getClass().getSuperclass().getDeclaredField("list"));
 			Object list = superListField.get(currentList);
