@@ -1,6 +1,6 @@
 # PacketListenerAPI
 
-[![Build Status](http://ci.inventivetalent.org/job/PacketListenerAPI/badge/icon)](https://ci.inventivetalent.org)
+[![Build Status](https://travis-ci.org/InventivetalentDev/PacketListenerAPI.svg?branch=master)](https://travis-ci.org/InventivetalentDev/PacketListenerAPI)
 
 API to modify Minecraft packets
 
