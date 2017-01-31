@@ -25,6 +25,7 @@ public class PacketListenerPlugin extends JavaPlugin {
 		}
 
 		SpigetUpdate updater = new SpigetUpdate(this, 2930);
+		updater.setUserAgent("PacketListenerAPI/" + getDescription().getVersion());
 		updater.checkForUpdate(new UpdateCallback() {
 			@Override
 			public void updateAvailable(String s, String s1, boolean b) {
