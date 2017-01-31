@@ -31,7 +31,6 @@ package org.inventivetalent.packetlistener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.inventivetalent.apihelper.APIManager;
-import org.mcstats.MetricsLite;
 
 public class PacketListenerPlugin extends JavaPlugin {
 
@@ -49,14 +48,6 @@ public class PacketListenerPlugin extends JavaPlugin {
 			getLogger().warning("Injection failed. Disabling...");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
-		}
-
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			if (metrics.start()) {
-				getLogger().info("Metrics started");
-			}
-		} catch (Exception e) {
 		}
 
 		//Initialize this API if the plugin got enabled

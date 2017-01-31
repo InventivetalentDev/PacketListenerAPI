@@ -122,9 +122,5 @@
             <id>techcable-repo</id>
             <url>http://repo.techcable.net/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>mcstats-repo</id>
-            <url>http://repo.mcstats.org/content/groups/public/</url>
-        </repository>
     </repositories>
 </project>
