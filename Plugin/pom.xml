@@ -13,9 +13,6 @@
     <artifactId>plugin</artifactId>
     <version>${pl.version}</version>
 
-    <build>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>org.inventivetalent.packetlistener</groupId>
