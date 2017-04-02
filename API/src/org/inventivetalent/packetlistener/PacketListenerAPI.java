@@ -30,9 +30,6 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 		channelInjector = new ChannelInjector();
 		if (injected = channelInjector.inject(this)) {
 			channelInjector.addServerChannel();
-			logger.info("Injected custom channel handlers.");
-		} else {
-			logger.severe("Failed to inject channel handlers");
 		}
 
 	}
@@ -43,7 +40,6 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 		//Register our events
 		APIManager.registerEvents(this, this);
 
-		logger.info("Adding channels for online players...");
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			channelInjector.addChannel(player);
 		}
@@ -55,12 +51,11 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 		if (!injected) {
 			return;//Not enabled
 		}
-		logger.info("Removing channels for online players...");
+		
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			channelInjector.removeChannel(player);
 		}
 
-		logger.info("Removing packet handlers (" + PacketHandler.getHandlers().size() + ")...");
 		while (!PacketHandler.getHandlers().isEmpty()) {
 			PacketHandler.removeHandler(PacketHandler.getHandlers().get(0));
 		}
