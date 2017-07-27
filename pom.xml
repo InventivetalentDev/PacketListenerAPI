@@ -19,6 +19,7 @@
 
     <properties>
         <pl.version>3.6.0-SNAPSHOT</pl.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
