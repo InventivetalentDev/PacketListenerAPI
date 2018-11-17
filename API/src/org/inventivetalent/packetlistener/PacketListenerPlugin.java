@@ -6,6 +6,7 @@ import org.inventivetalent.apihelper.APIManager;
 import org.inventivetalent.packetlistener.metrics.Metrics;
 import org.inventivetalent.update.spiget.SpigetUpdate;
 import org.inventivetalent.update.spiget.UpdateCallback;
+import org.inventivetalent.update.spiget.comparator.VersionComparator;
 
 public class PacketListenerPlugin extends JavaPlugin {
 
@@ -26,7 +27,7 @@ public class PacketListenerPlugin extends JavaPlugin {
 		}
 
 		SpigetUpdate updater = new SpigetUpdate(this, 2930);
-		updater.setUserAgent("PacketListenerAPI/" + getDescription().getVersion());
+		updater.setUserAgent("PacketListenerAPI/" + getDescription().getVersion()).setVersionComparator(VersionComparator.SEM_VER_SNAPSHOT);
 		updater.checkForUpdate(new UpdateCallback() {
 			@Override
 			public void updateAvailable(String s, String s1, boolean b) {
