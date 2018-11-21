@@ -119,5 +119,9 @@
             <id>mojang</id>
             <url>https://libraries.minecraft.net/</url>
         </repository>
+        <repository>
+            <id>techcable-repo</id>
+            <url>http://repo.techcable.net/content/groups/public/</url>
+        </repository>
     </repositories>
 </project>
