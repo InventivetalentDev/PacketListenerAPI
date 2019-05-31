@@ -1,6 +1,6 @@
 language: java
 jdk:
-- oraclejdk8
+- openjdk8
 
 script: "mvn javadoc:aggregate deploy --settings settings.xml"
 before_script:
