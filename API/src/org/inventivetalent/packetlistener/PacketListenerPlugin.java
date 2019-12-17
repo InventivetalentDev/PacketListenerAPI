@@ -26,19 +26,23 @@ public class PacketListenerPlugin extends JavaPlugin {
 			return;
 		}
 
-		SpigetUpdate updater = new SpigetUpdate(this, 2930);
-		updater.setUserAgent("PacketListenerAPI/" + getDescription().getVersion()).setVersionComparator(VersionComparator.SEM_VER_SNAPSHOT);
-		updater.checkForUpdate(new UpdateCallback() {
-			@Override
-			public void updateAvailable(String s, String s1, boolean b) {
-				getLogger().info("There is a new version available: https://r.spiget.org/2930");
-			}
+		try {
+			SpigetUpdate updater = new SpigetUpdate(this, 2930);
+			updater.setUserAgent("PacketListenerAPI/" + getDescription().getVersion()).setVersionComparator(VersionComparator.SEM_VER_SNAPSHOT);
+			updater.checkForUpdate(new UpdateCallback() {
+				@Override
+				public void updateAvailable(String s, String s1, boolean b) {
+					getLogger().info("There is a new version available: https://r.spiget.org/2930");
+				}
 
-			@Override
-			public void upToDate() {
-				getLogger().info("Plugin is up-to-date");
-			}
-		});
+				@Override
+				public void upToDate() {
+					getLogger().info("Plugin is up-to-date");
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();	
+		}
 
 		new Metrics(this);
 
