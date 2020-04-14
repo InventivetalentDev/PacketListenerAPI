@@ -44,7 +44,7 @@ public class PacketListenerPlugin extends JavaPlugin {
 			e.printStackTrace();	
 		}
 
-		new Metrics(this);
+		new Metrics(this, 225);
 
 		//Initialize this API if the plugin got enabled
 		APIManager.initAPI(PacketListenerAPI.class);
