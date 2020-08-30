@@ -123,5 +123,9 @@
             <id>techcable-repo</id>
             <url>http://repo.techcable.net/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>mikeprimm-repo</id>
+            <url>http://repo.mikeprimm.com/</url>
+        </repository>
     </repositories>
 </project>
