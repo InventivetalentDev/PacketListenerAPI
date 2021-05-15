@@ -40,11 +40,7 @@ public abstract class PacketAbstract {
 	 * @param value Value to be assigned to the field
 	 */
 	public void setPacketValue(String field, Object value) {
-		try {
-			fieldResolver.resolve(field).set(getPacket(), value);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		fieldResolver.resolveAccessor(field).set(getPacket(), value);
 	}
 
 	/**
@@ -55,7 +51,7 @@ public abstract class PacketAbstract {
 	 */
 	public void setPacketValueSilent(String field, Object value) {
 		try {
-			fieldResolver.resolve(field).set(getPacket(), value);
+			setPacketValue(field, value);
 		} catch (Exception e) {
 		}
 	}
@@ -68,7 +64,7 @@ public abstract class PacketAbstract {
 	 */
 	public void setPacketValue(int index, Object value) {
 		try {
-			fieldResolver.resolveIndex(index).set(getPacket(), value);
+			fieldResolver.resolveIndexAccessor(index).set(getPacket(), value);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -82,7 +78,7 @@ public abstract class PacketAbstract {
 	 */
 	public void setPacketValueSilent(int index, Object value) {
 		try {
-			fieldResolver.resolveIndex(index).set(getPacket(), value);
+			setPacketValue(index, value);
 		} catch (Exception e) {
 		}
 	}
@@ -94,11 +90,7 @@ public abstract class PacketAbstract {
 	 * @return current value of the field
 	 */
 	public Object getPacketValue(String field) {
-		try {
-			return fieldResolver.resolve(field).get(getPacket());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return fieldResolver.resolveAccessor(field).get(getPacket());
 	}
 
 	/**
@@ -109,7 +101,7 @@ public abstract class PacketAbstract {
 	 */
 	public Object getPacketValueSilent(String field) {
 		try {
-			return fieldResolver.resolve(field).get(getPacket());
+			return getPacketValue(field);
 		} catch (Exception e) {
 		}
 		return null;
@@ -122,11 +114,7 @@ public abstract class PacketAbstract {
 	 * @return value of the field
 	 */
 	public Object getPacketValue(int index) {
-		try {
-			return fieldResolver.resolveIndex(index).get(getPacket());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return fieldResolver.resolveIndexAccessor(index).get(getPacket());
 	}
 
 	/**
@@ -137,7 +125,7 @@ public abstract class PacketAbstract {
 	 */
 	public Object getPacketValueSilent(int index) {
 		try {
-			return fieldResolver.resolveIndex(index).get(getPacket());
+			return getPacketValue(index);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

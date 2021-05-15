@@ -4,12 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.inventivetalent.packetlistener.Cancellable;
 import org.inventivetalent.packetlistener.IPacketListener;
+import org.inventivetalent.reflection.accessor.FieldAccessor;
 import org.inventivetalent.reflection.resolver.FieldResolver;
 import org.inventivetalent.reflection.resolver.MethodResolver;
 import org.inventivetalent.reflection.resolver.minecraft.NMSClassResolver;
-import org.inventivetalent.reflection.util.AccessUtil;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
@@ -33,10 +32,10 @@ public abstract class ChannelAbstract {
     protected static final FieldResolver minecraftServerFieldResolver = new FieldResolver(MinecraftServer);
     protected static final FieldResolver serverConnectionFieldResolver = new FieldResolver(ServerConnection);
 
-    static final Field networkManager = playerConnectionFieldResolver.resolveSilent("networkManager");
-    static final Field playerConnection = entityPlayerFieldResolver.resolveSilent("playerConnection");
-    static final Field serverConnection = minecraftServerFieldResolver.resolveByFirstTypeSilent(ServerConnection);
-    static final Field connectionList = serverConnectionFieldResolver.resolveByLastTypeSilent(List.class);
+    static final FieldAccessor networkManager = playerConnectionFieldResolver.resolveAccessor("networkManager");
+    static final FieldAccessor playerConnection = entityPlayerFieldResolver.resolveAccessor("playerConnection");
+    static final FieldAccessor serverConnection = minecraftServerFieldResolver.resolveByFirstTypeAccessor(ServerConnection);
+    static final FieldAccessor connectionList = serverConnectionFieldResolver.resolveByLastTypeAccessor(List.class);
 
     protected static final MethodResolver craftServerFieldResolver = new MethodResolver(Bukkit.getServer().getClass());
 
@@ -69,7 +68,7 @@ public abstract class ChannelAbstract {
             if (!currentList.isEmpty()) {
                 // Try to check if our list is already set
                 try {
-                    Field superListField = AccessUtil.setAccessible(currentList.getClass().getSuperclass().getDeclaredField("list"));
+                    FieldAccessor superListField = new FieldAccessor(currentList.getClass().getSuperclass().getDeclaredField("list"));
                     Object list = superListField.get(currentList);
                     if (IListenerList.class.isAssignableFrom(list.getClass())) { return; }
                 } catch (Exception e) {

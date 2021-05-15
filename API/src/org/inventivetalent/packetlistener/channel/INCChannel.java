@@ -6,15 +6,15 @@ import io.netty.channel.ChannelPromise;
 import org.bukkit.entity.Player;
 import org.inventivetalent.packetlistener.Cancellable;
 import org.inventivetalent.packetlistener.IPacketListener;
+import org.inventivetalent.reflection.accessor.FieldAccessor;
 import org.inventivetalent.reflection.minecraft.Minecraft;
 
-import java.lang.reflect.Field;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
 public class INCChannel extends ChannelAbstract {
 
-	private static final Field channelField = networkManagerFieldResolver.resolveByFirstTypeSilent(io.netty.channel.Channel.class);
+	private static final FieldAccessor channelField = networkManagerFieldResolver.resolveByFirstTypeAccessor(io.netty.channel.Channel.class);
 
 	public INCChannel(IPacketListener iPacketListener) {
 		super(iPacketListener);
