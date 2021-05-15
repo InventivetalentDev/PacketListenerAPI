@@ -27,6 +27,10 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	//This gets called either by #registerAPI above, or by the API manager if another plugin requires this API
 	@Override
 	public void load() {
+		if (injected) {
+			System.err.println("Already Injected! Restart your server, do not /reload");
+		}
+
 		channelInjector = new ChannelInjector();
 		if (injected = channelInjector.inject(this)) {
 			channelInjector.addServerChannel();
