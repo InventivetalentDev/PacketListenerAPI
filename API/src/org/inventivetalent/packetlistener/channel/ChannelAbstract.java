@@ -60,34 +60,20 @@ public abstract class ChannelAbstract {
     public abstract void removeChannel(Player player);
 
     public void addServerChannel() {
-
-        System.out.println(EntityPlayer);
-        System.out.println(PlayerConnection);
-        System.out.println(NetworkManager);
-        System.out.println(Packet);
-        System.out.println(ServerConnection);
-        System.out.println(MinecraftServer);
-
-        System.out.println(networkManager);
-        System.out.println(playerConnection);
-        System.out.println(serverConnection);
-        System.out.println(connectionList);
-
         try {
             Object dedicatedServer = getServer.invoke(Bukkit.getServer());
             if (dedicatedServer == null) { return; }
             Object serverConnection = ChannelAbstract.serverConnection.get(dedicatedServer);
             if (serverConnection == null) { return; }
             List currentList = (List<?>) connectionList.get(serverConnection);
-			System.out.println(currentList);
             if (!currentList.isEmpty()) {
-            	// Try to check if our list is already set
+                // Try to check if our list is already set
                 try {
                     Field superListField = AccessUtil.setAccessible(currentList.getClass().getSuperclass().getDeclaredField("list"));
                     Object list = superListField.get(currentList);
                     if (IListenerList.class.isAssignableFrom(list.getClass())) { return; }
                 } catch (Exception e) {
-                	// Newer Java versions will prevent access to the SynchronizedCollection classes completely, so just override it :shrug:
+                    // Newer Java versions will prevent access to the SynchronizedCollection classes completely, so just override it :shrug:
                     System.err.println("[PacketListenerAPI] Failed to determine existing server channel, overriding non-empty one! This will break things!");
                     e.printStackTrace();
                 }
