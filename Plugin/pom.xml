@@ -19,16 +19,6 @@
             <artifactId>api</artifactId>
             <version>${pl.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.inventivetalent.packetlistener</groupId>
-            <artifactId>1_7</artifactId>
-            <version>${pl.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.inventivetalent.packetlistener</groupId>
-            <artifactId>1_8</artifactId>
-            <version>${pl.version}</version>
-        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.inventivetalent.packetlistener</groupId>-->
             <!--<artifactId>comp-api</artifactId>-->

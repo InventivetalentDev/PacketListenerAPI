@@ -1,7 +1,8 @@
 package org.inventivetalent.packetlistener.channel;
 
-import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
-import net.minecraft.util.io.netty.channel.ChannelPromise;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import org.bukkit.entity.Player;
 import org.inventivetalent.packetlistener.Cancellable;
 import org.inventivetalent.packetlistener.IPacketListener;
@@ -11,26 +12,23 @@ import java.lang.reflect.Field;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
-public class NMUChannel extends ChannelAbstract {
+public class INCChannel extends ChannelAbstract {
 
-	private static final Field channelField = networkManagerFieldResolver.resolveByFirstTypeSilent(net.minecraft.util.io.netty.channel.Channel.class);
+	private static final Field channelField = networkManagerFieldResolver.resolveByFirstTypeSilent(io.netty.channel.Channel.class);
 
-	public NMUChannel(IPacketListener iPacketListener) {
+	public INCChannel(IPacketListener iPacketListener) {
 		super(iPacketListener);
 	}
 
 	@Override
 	public void addChannel(final Player player) {
 		try {
-			final net.minecraft.util.io.netty.channel.Channel channel = getChannel(player);
-			addChannelExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						channel.pipeline().addBefore(KEY_HANDLER, KEY_PLAYER, new ChannelHandler(player));
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
+			final io.netty.channel.Channel channel = getChannel(player);
+			addChannelExecutor.execute(() -> {
+				try {
+					channel.pipeline().addBefore(KEY_HANDLER, KEY_PLAYER, new ChannelHandler(player));
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
 			});
 		} catch (ReflectiveOperationException e) {
@@ -41,17 +39,14 @@ public class NMUChannel extends ChannelAbstract {
 	@Override
 	public void removeChannel(Player player) {
 		try {
-			final net.minecraft.util.io.netty.channel.Channel channel = getChannel(player);
-			removeChannelExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (channel.pipeline().get(KEY_PLAYER) != null) {
-							channel.pipeline().remove(KEY_PLAYER);
-						}
-					} catch (Exception e) {
-						throw new RuntimeException(e);
+			final io.netty.channel.Channel channel = getChannel(player);
+			removeChannelExecutor.execute(() -> {
+				try {
+					if (channel.pipeline().get(KEY_PLAYER) != null) {
+						channel.pipeline().remove(KEY_PLAYER);
 					}
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
 			});
 		} catch (ReflectiveOperationException e) {
@@ -59,10 +54,10 @@ public class NMUChannel extends ChannelAbstract {
 		}
 	}
 
-	net.minecraft.util.io.netty.channel.Channel getChannel(Player player) throws ReflectiveOperationException {
+	io.netty.channel.Channel getChannel(Player player) throws ReflectiveOperationException {
 		final Object handle = Minecraft.getHandle(player);
 		final Object connection = playerConnection.get(handle);
-		return (net.minecraft.util.io.netty.channel.Channel) channelField.get(networkManager.get(connection));
+		return (io.netty.channel.Channel) channelField.get(networkManager.get(connection));
 	}
 
 	@Override
@@ -76,20 +71,16 @@ public class NMUChannel extends ChannelAbstract {
 		public boolean add(E paramE) {
 			try {
 				final E a = paramE;
-				addChannelExecutor.execute(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							net.minecraft.util.io.netty.channel.Channel channel = null;
-							while (channel == null) {
-								channel = (net.minecraft.util.io.netty.channel.Channel) channelField.get(a);
-							}
-							if (channel.pipeline().get(KEY_SERVER) == null) {
-								channel.pipeline().addBefore(KEY_HANDLER, KEY_SERVER, new ChannelHandler(new NMUChannelWrapper(channel)));
-							}
-						} catch (Exception e) {
+				addChannelExecutor.execute(() -> {
+					try {
+						io.netty.channel.Channel channel = null;
+						while (channel == null) {
+							channel = (io.netty.channel.Channel) channelField.get(a);
 						}
+						if (channel.pipeline().get(KEY_SERVER) == null) {
+							channel.pipeline().addBefore(KEY_HANDLER, KEY_SERVER, new ChannelHandler(new INCChannelWrapper(channel)));
+						}
+					} catch (Exception e) {
 					}
 				});
 			} catch (Exception e) {
@@ -101,17 +92,14 @@ public class NMUChannel extends ChannelAbstract {
 		public boolean remove(Object arg0) {
 			try {
 				final Object a = arg0;
-				removeChannelExecutor.execute(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							net.minecraft.util.io.netty.channel.Channel channel = null;
-							while (channel == null) {
-								channel = (net.minecraft.util.io.netty.channel.Channel) channelField.get(a);
-							}
-							channel.pipeline().remove(KEY_SERVER);
-						} catch (Exception e) {
+				removeChannelExecutor.execute(() -> {
+					try {
+						io.netty.channel.Channel channel = null;
+						while (channel == null) {
+							channel = (io.netty.channel.Channel) channelField.get(a);
 						}
+						channel.pipeline().remove(KEY_SERVER);
+					} catch (Exception e) {
 					}
 				});
 			} catch (Exception e) {
@@ -120,7 +108,7 @@ public class NMUChannel extends ChannelAbstract {
 		}
 	}
 
-	class ChannelHandler extends net.minecraft.util.io.netty.channel.ChannelDuplexHandler implements IChannelHandler {
+	class ChannelHandler extends ChannelDuplexHandler implements IChannelHandler {
 
 		private Object owner;
 
@@ -156,13 +144,14 @@ public class NMUChannel extends ChannelAbstract {
 
 		@Override
 		public String toString() {
-			return "NMUChannel$ChannelHandler@" + hashCode() + " (" + this.owner + ")";
+			return "INCChannel$ChannelHandler@" + hashCode() + " (" + this.owner + ")";
 		}
+
 	}
 
-	class NMUChannelWrapper extends ChannelWrapper<net.minecraft.util.io.netty.channel.Channel> implements IChannelWrapper {
+	class INCChannelWrapper extends ChannelWrapper<io.netty.channel.Channel> implements IChannelWrapper {
 
-		public NMUChannelWrapper(net.minecraft.util.io.netty.channel.Channel channel) {
+		public INCChannelWrapper(io.netty.channel.Channel channel) {
 			super(channel);
 		}
 
@@ -176,4 +165,5 @@ public class NMUChannel extends ChannelAbstract {
 			return this.channel().localAddress();
 		}
 	}
+
 }

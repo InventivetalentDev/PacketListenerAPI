@@ -19,9 +19,7 @@ public class ChannelInjector {
 		List<Exception> exceptions = new ArrayList<>();
 		try {
 			Class.forName("net.minecraft.util.io.netty.channel.Channel");
-			channel = newChannelInstance(iPacketListener, "org.inventivetalent.packetlistener.channel.NMUChannel");
-			System.out.println("[PacketListenerAPI] Using NMUChannel");
-			return true;
+			throw new UnsupportedOperationException("Unsupported Server Version!");
 		} catch (Exception e) {
 			exceptions.add(e);
 		}

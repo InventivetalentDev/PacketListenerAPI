@@ -10,15 +10,12 @@
     <version>parent</version>
     <modules>
         <module>API</module>
-        <module>1_7</module>
-        <module>1_8</module>
-        <!--<module>Comp-API</module>-->
         <module>Plugin</module>
     </modules>
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.8.0-SNAPSHOT</pl.version>
+        <pl.version>3.9.0-SNAPSHOT</pl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.9</maven.compiler.source>
         <maven.compiler.target>1.9</maven.compiler.target>
@@ -125,14 +122,6 @@
         <repository>
             <id>mojang</id>
             <url>https://libraries.minecraft.net/</url>
-        </repository>
-        <repository>
-            <id>techcable-repo</id>
-            <url>http://repo.techcable.net/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>mikeprimm-repo</id>
-            <url>http://repo.mikeprimm.com/</url>
         </repository>
     </repositories>
 </project>
