@@ -8,8 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
-import org.inventivetalent.apihelper.API;
-import org.inventivetalent.apihelper.APIManager;
 import org.inventivetalent.packetlistener.channel.ChannelWrapper;
 import org.inventivetalent.packetlistener.handler.PacketHandler;
 import org.inventivetalent.packetlistener.handler.ReceivedPacket;
@@ -17,7 +15,7 @@ import org.inventivetalent.packetlistener.handler.SentPacket;
 
 import java.util.logging.Logger;
 
-public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener, Listener, API {
+public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener, Listener {
 
 	private ChannelInjector channelInjector;
 	protected boolean injected = false;
@@ -25,7 +23,6 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	Logger logger = Logger.getLogger("PacketListenerAPI");
 
 	//This gets called either by #registerAPI above, or by the API manager if another plugin requires this API
-	@Override
 	public void load() {
 		if (injected) {
 			System.err.println("Already Injected! Restart your server, do not /reload");
@@ -42,10 +39,8 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	}
 
 	//This gets called either by #initAPI above or #initAPI in one of the requiring plugins
-	@Override
 	public void init(Plugin plugin) {
-		//Register our events
-		APIManager.registerEvents(this, this);
+		Bukkit.getPluginManager().registerEvents(this, plugin);
 
 		logger.info("Adding channels for online players...");
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -54,7 +49,6 @@ public class PacketListenerAPI /*extends JavaPlugin*/ implements IPacketListener
 	}
 
 	//This gets called either by #disableAPI above or #disableAPI in one of the requiring plugins
-	@Override
 	public void disable(Plugin plugin) {
 		if (!injected) {
 			return;//Not enabled

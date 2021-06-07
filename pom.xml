@@ -63,7 +63,6 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.mcstats.*</include>
                                     <include>org.inventivetalent.packetlistenerapi:**</include>
                                     <include>org.inventivetalent:reflectionhelper**</include>
                                     <include>org.inventivetalent:apimanager**</include>
@@ -71,10 +70,6 @@
                                 </includes>
                             </artifactSet>
                             <relocations>
-                                <relocation>
-                                    <pattern>org.mcstats</pattern>
-                                    <shadedPattern>org.inventivetalent.packetlistener.mcstats</shadedPattern>
-                                </relocation>
                                 <relocation>
                                     <pattern>org.inventivetalent.reflection</pattern>
                                     <shadedPattern>org.inventivetalent.packetlistener.reflection</shadedPattern>
