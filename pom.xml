@@ -96,7 +96,7 @@
     <repositories>
         <repository>
             <id>inventive-repo</id>
-            <url>https://repo.inventivetalent.org/content/groups/public/</url>
+            <url>https://repo.inventivetalent.org/repository/public/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
