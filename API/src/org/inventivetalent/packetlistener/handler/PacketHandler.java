@@ -165,8 +165,8 @@ public abstract class PacketHandler {
 	}
 
 	static NMSClassResolver nmsClassResolver               = new NMSClassResolver();
-	static FieldResolver    EntityPlayerFieldResolver      = new FieldResolver(nmsClassResolver.resolveSilent("EntityPlayer"));
-	static MethodResolver   PlayerConnectionMethodResolver = new MethodResolver(nmsClassResolver.resolveSilent("PlayerConnection"));
+	static FieldResolver    EntityPlayerFieldResolver      = new FieldResolver(nmsClassResolver.resolveSilent("EntityPlayer", "server.level.EntityPlayer"));
+	static MethodResolver   PlayerConnectionMethodResolver = new MethodResolver(nmsClassResolver.resolveSilent("PlayerConnection", "server.network.PlayerConnection"));
 
 	// Sending methods
 	public void sendPacket(Player p, Object packet) {

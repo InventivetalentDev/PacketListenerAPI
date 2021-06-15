@@ -19,12 +19,12 @@ public abstract class ChannelAbstract {
 
     protected static final NMSClassResolver nmsClassResolver = new NMSClassResolver();
 
-    static final Class<?> EntityPlayer = nmsClassResolver.resolveSilent("EntityPlayer");
-    static final Class<?> PlayerConnection = nmsClassResolver.resolveSilent("PlayerConnection");
-    static final Class<?> NetworkManager = nmsClassResolver.resolveSilent("NetworkManager");
-    static final Class<?> Packet = nmsClassResolver.resolveSilent("Packet");
-    static final Class<?> ServerConnection = nmsClassResolver.resolveSilent("ServerConnection");
-    static final Class<?> MinecraftServer = nmsClassResolver.resolveSilent("MinecraftServer");
+    static final Class<?> EntityPlayer = nmsClassResolver.resolveSilent("EntityPlayer", "server.level.EntityPlayer");
+    static final Class<?> PlayerConnection = nmsClassResolver.resolveSilent("PlayerConnection", "server.network.PlayerConnection");
+    static final Class<?> NetworkManager = nmsClassResolver.resolveSilent("NetworkManager", "network.NetworkManager");
+    static final Class<?> Packet = nmsClassResolver.resolveSilent("Packet", "network.protocol.Packet");
+    static final Class<?> ServerConnection = nmsClassResolver.resolveSilent("ServerConnection", "server.network.ServerConnection");
+    static final Class<?> MinecraftServer = nmsClassResolver.resolveSilent("MinecraftServer", "server.MinecraftServer");
 
     protected static final FieldResolver entityPlayerFieldResolver = new FieldResolver(EntityPlayer);
     protected static final FieldResolver playerConnectionFieldResolver = new FieldResolver(PlayerConnection);
