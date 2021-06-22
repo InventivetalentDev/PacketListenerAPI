@@ -32,8 +32,8 @@ public abstract class ChannelAbstract {
     protected static final FieldResolver minecraftServerFieldResolver = new FieldResolver(MinecraftServer);
     protected static final FieldResolver serverConnectionFieldResolver = new FieldResolver(ServerConnection);
 
-    static final FieldAccessor networkManager = playerConnectionFieldResolver.resolveAccessor("networkManager");
-    static final FieldAccessor playerConnection = entityPlayerFieldResolver.resolveAccessor("playerConnection");
+    static final FieldAccessor networkManager = playerConnectionFieldResolver.resolveByFirstTypeAccessor(NetworkManager);
+    static final FieldAccessor playerConnection = entityPlayerFieldResolver.resolveByFirstTypeAccessor(PlayerConnection);
     static final FieldAccessor serverConnection = minecraftServerFieldResolver.resolveByFirstTypeAccessor(ServerConnection);
     static final FieldAccessor connectionList = serverConnectionFieldResolver.resolveByLastTypeAccessor(List.class);
 
