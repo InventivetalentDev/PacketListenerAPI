@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.inventivetalent.packetlistenerapi</groupId>
         <artifactId>parent</artifactId>
-        <version>parent</version>
+        <version>3.9.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
