@@ -182,7 +182,7 @@ public abstract class PacketHandler {
             Object handle = Minecraft.getHandle(p);
             FieldAccessor connectionField = null;
             try {
-				EntityPlayerFieldResolver.resolveByFirstTypeAccessor(PlayerConnection);
+                connectionField = EntityPlayerFieldResolver.resolveByFirstTypeAccessor(PlayerConnection);
             } catch (Exception e) {
 				connectionField = EntityPlayerFieldResolver.resolveAccessor("playerConnection");
             }
