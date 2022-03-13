@@ -15,7 +15,7 @@
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.9.9-SNAPSHOT</pl.version>
+        <pl.version>3.9.10-SNAPSHOT</pl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -101,10 +101,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>md_5-repo</id>
-            <url>http://repo.md-5.net/content/repositories/public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
