@@ -44,6 +44,7 @@ public abstract class ChannelAbstract {
     final Executor addChannelExecutor = Executors.newSingleThreadExecutor();
     final Executor removeChannelExecutor = Executors.newSingleThreadExecutor();
 
+    static final String KEY_UNBUNDLER = "unbundler";
     static final String KEY_HANDLER = "packet_handler";
     static final String KEY_PLAYER = "packet_listener_player";
     static final String KEY_SERVER = "packet_listener_server";
