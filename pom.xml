@@ -15,7 +15,7 @@
     <name>PacketListenerAPI</name>
 
     <properties>
-        <pl.version>3.9.10-SNAPSHOT</pl.version>
+        <pl.version>3.9.11-SNAPSHOT</pl.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
