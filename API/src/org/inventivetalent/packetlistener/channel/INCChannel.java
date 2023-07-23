@@ -26,7 +26,7 @@ public class INCChannel extends ChannelAbstract {
 			final io.netty.channel.Channel channel = getChannel(player);
 			addChannelExecutor.execute(() -> {
 				try {
-					channel.pipeline().addBefore(KEY_HANDLER, KEY_PLAYER, new ChannelHandler(player));
+					channel.pipeline().addBefore(channel.pipeline().get(KEY_UNBUNDLER) != null ? KEY_UNBUNDLER : KEY_HANDLER, KEY_PLAYER, new ChannelHandler(player));
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -78,7 +78,7 @@ public class INCChannel extends ChannelAbstract {
 							channel = (io.netty.channel.Channel) channelField.get(a);
 						}
 						if (channel.pipeline().get(KEY_SERVER) == null) {
-							channel.pipeline().addBefore(KEY_HANDLER, KEY_SERVER, new ChannelHandler(new INCChannelWrapper(channel)));
+							channel.pipeline().addBefore(channel.pipeline().get(KEY_UNBUNDLER) != null ? KEY_UNBUNDLER : KEY_HANDLER, KEY_SERVER, new ChannelHandler(new INCChannelWrapper(channel)));
 						}
 					} catch (Exception e) {
 					}
