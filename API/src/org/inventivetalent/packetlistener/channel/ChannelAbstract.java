@@ -21,18 +21,19 @@ public abstract class ChannelAbstract {
 
     static final Class<?> EntityPlayer = nmsClassResolver.resolveSilent("EntityPlayer", "server.level.EntityPlayer");
     static final Class<?> PlayerConnection = nmsClassResolver.resolveSilent("PlayerConnection", "server.network.PlayerConnection");
+    static final Class<?> ServerCommonPacketListenerImpl = nmsClassResolver.resolveSilent("server.network.ServerCommonPacketListenerImpl", "PlayerConnection", "server.network.PlayerConnection");
     static final Class<?> NetworkManager = nmsClassResolver.resolveSilent("NetworkManager", "network.NetworkManager");
     static final Class<?> Packet = nmsClassResolver.resolveSilent("Packet", "network.protocol.Packet");
     static final Class<?> ServerConnection = nmsClassResolver.resolveSilent("ServerConnection", "server.network.ServerConnection");
     static final Class<?> MinecraftServer = nmsClassResolver.resolveSilent("MinecraftServer", "server.MinecraftServer");
 
     protected static final FieldResolver entityPlayerFieldResolver = new FieldResolver(EntityPlayer);
-    protected static final FieldResolver playerConnectionFieldResolver = new FieldResolver(PlayerConnection);
+    protected static final FieldResolver serverCommonPacketListenerImplFieldResolver = new FieldResolver(ServerCommonPacketListenerImpl);
     protected static final FieldResolver networkManagerFieldResolver = new FieldResolver(NetworkManager);
     protected static final FieldResolver minecraftServerFieldResolver = new FieldResolver(MinecraftServer);
     protected static final FieldResolver serverConnectionFieldResolver = new FieldResolver(ServerConnection);
 
-    static final FieldAccessor networkManager = playerConnectionFieldResolver.resolveByFirstTypeAccessor(NetworkManager);
+    static final FieldAccessor networkManager = serverCommonPacketListenerImplFieldResolver.resolveByFirstTypeAccessor(NetworkManager);
     static final FieldAccessor playerConnection = entityPlayerFieldResolver.resolveByFirstTypeAccessor(PlayerConnection);
     static final FieldAccessor serverConnection = minecraftServerFieldResolver.resolveByFirstTypeAccessor(ServerConnection);
     static final FieldAccessor connectionList = serverConnectionFieldResolver.resolveByLastTypeAccessor(List.class);
